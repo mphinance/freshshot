@@ -1,0 +1,13 @@
+{
+  "_comment": "The simplest useful freshshot config: serve a local folder and capture a single screenshot of the home page. Start here.",
+
+  "serve": "site",
+  "shots": [
+    {
+      "name": "home",
+      "steps": [
+        { "goto": "/index.html" }
+      ]
+    }
+  ]
+}

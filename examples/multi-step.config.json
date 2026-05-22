@@ -1,0 +1,26 @@
+{
+  "_comment": "Demonstrates the step language and multi-shot flow. Shots run in order on one browser session, so the 'results' shot has no goto - it continues from the page state left by the 'search-empty' shot.",
+
+  "serve": "site",
+  "outDir": "screenshots",
+  "viewport": { "width": 1280, "height": 800 },
+  "shots": [
+    {
+      "name": "search-empty",
+      "steps": [
+        { "goto": "/search.html" },
+        { "waitFor": "#search-input" }
+      ],
+      "screenshot": { "animations": "disabled" }
+    },
+    {
+      "name": "search-results",
+      "steps": [
+        { "fill": "#search-input", "value": "playwright" },
+        { "click": "button[type=\"submit\"]" },
+        { "waitFor": ".results-list .result-item" }
+      ],
+      "screenshot": { "animations": "disabled" }
+    }
+  ]
+}

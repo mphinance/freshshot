@@ -1,0 +1,15 @@
+{
+  "_comment": "Uses baseUrl instead of serve to screenshot an already-deployed or already-running site. Use this when your site is hosted elsewhere or running on a dev server you start separately.",
+
+  "baseUrl": "https://example.com",
+  "outDir": "screenshots",
+  "viewport": { "width": 1280, "height": 800 },
+  "shots": [
+    {
+      "name": "homepage",
+      "steps": [
+        { "goto": "/" }
+      ]
+    }
+  ]
+}
