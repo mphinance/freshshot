@@ -3,3 +3,8 @@ node_modules
 *.log
 .DS_Store
 Thumbs.db
+
+# never commit secrets or downloaded installers
+.npmrc
+*.msi
+npm_recovery_codes.txt
