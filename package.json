@@ -27,6 +27,12 @@
     "visual-regression"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mphinance/freshshot.git"
+  },
+  "homepage": "https://github.com/mphinance/freshshot#readme",
+  "bugs": "https://github.com/mphinance/freshshot/issues",
   "dependencies": {
     "pixelmatch": "^7.0.0",
     "playwright": "^1.49.0",
