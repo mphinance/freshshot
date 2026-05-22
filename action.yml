@@ -1,0 +1,54 @@
+name: 'freshshot'
+description: 'Keep README screenshots fresh - capture, perceptual-diff, and commit only real changes.'
+branding:
+  icon: 'camera'
+  color: 'purple'
+
+inputs:
+  config:
+    description: 'Path to the freshshot config file.'
+    required: false
+    default: 'freshshot.config.json'
+  commit:
+    description: 'Commit refreshed screenshots back to the branch.'
+    required: false
+    default: 'true'
+  commit-message:
+    description: 'Commit message used when screenshots change.'
+    required: false
+    default: 'Refresh screenshots [skip ci]'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install freshshot
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm install --omit=dev --no-audit --no-fund
+
+    - name: Install Chromium
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npx playwright install --with-deps chromium
+
+    - name: Run freshshot
+      shell: bash
+      run: node "${{ github.action_path }}/bin/freshshot.mjs" --config "${{ inputs.config }}"
+
+    - name: Commit refreshed screenshots
+      if: ${{ inputs.commit == 'true' }}
+      shell: bash
+      run: |
+        out=$(node -e "console.log(JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).outDir||'screenshots')" "${{ inputs.config }}")
+        git add "$out"
+        if git diff --cached --quiet; then
+          echo "Screenshots are already up to date."
+          exit 0
+        fi
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git commit -m "${{ inputs.commit-message }}"
+        # Rebase onto anything that landed while the job ran, so the push
+        # always fast-forwards.
+        git pull --rebase origin "${GITHUB_REF_NAME}"
+        git push

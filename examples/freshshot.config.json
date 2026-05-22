@@ -1,0 +1,49 @@
+{
+  "_comment": "A real freshshot config - the exact setup used by the Third Settler app. Copy this to your project root as freshshot.config.json and adjust.",
+
+  "serve": "site",
+  "outDir": "screenshots",
+  "viewport": { "width": 390, "height": 844 },
+  "deviceScaleFactor": 2,
+  "diffRatio": 0.0015,
+  "seedRandom": true,
+
+  "shots": [
+    {
+      "name": "landing",
+      "steps": [
+        { "goto": "/index.html" },
+        { "eval": "document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));var b=document.getElementById('installBtn');if(b)b.remove();" }
+      ],
+      "screenshot": { "animations": "disabled" }
+    },
+    {
+      "name": "board",
+      "steps": [
+        { "goto": "/play.html" },
+        { "fill": "#name1", "value": "Dad" },
+        { "fill": "#name2", "value": "Sam" },
+        { "click": "#start-btn" },
+        { "waitFor": "#board-svg polygon" }
+      ],
+      "screenshot": { "animations": "disabled" }
+    },
+    {
+      "name": "game",
+      "steps": [
+        { "click": "#play-btn" },
+        { "click": "[data-action=\"human-roll\"]" },
+        { "wait": 900 }
+      ],
+      "screenshot": { "animations": "disabled" }
+    },
+    {
+      "name": "win",
+      "steps": [
+        { "click": "button[data-p=\"0\"][data-d=\"1\"]", "times": 10 },
+        { "waitFor": ".confetti" },
+        { "eval": "document.querySelectorAll('.confetti').forEach(el=>el.getAnimations().forEach(a=>{a.currentTime=1400;a.pause();}))" }
+      ]
+    }
+  ]
+}

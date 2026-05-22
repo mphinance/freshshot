@@ -1,0 +1,35 @@
+{
+  "name": "freshshot",
+  "version": "0.1.0",
+  "description": "Keep your README screenshots fresh: capture, perceptual-diff, and commit only the ones that truly changed.",
+  "type": "module",
+  "bin": {
+    "freshshot": "bin/freshshot.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "action.yml"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "freshshot": "node bin/freshshot.mjs",
+    "test": "node --test"
+  },
+  "keywords": [
+    "screenshots",
+    "readme",
+    "playwright",
+    "documentation",
+    "ci",
+    "visual-regression"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "pixelmatch": "^7.0.0",
+    "playwright": "^1.49.0",
+    "pngjs": "^7.0.0"
+  }
+}
