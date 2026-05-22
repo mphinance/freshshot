@@ -74,13 +74,17 @@ export async function capture(cfg, { check = false } = {}) {
   const results = [];
   try {
     for (const shot of cfg.shots) {
-      for (const step of shot.steps) await runStep(page, step, base);
-      // Let any web fonts finish, then settle, for a stable capture.
-      await page.evaluate(() => (document.fonts ? document.fonts.ready : null));
-      await page.waitForTimeout(cfg.settleMs);
-      const buf = await page.screenshot(shot.screenshot || {});
-      const dest = join(cfg.outDir, `${shot.name}.png`);
-      results.push(decide(shot.name, dest, buf, cfg.diffRatio, !check));
+      try {
+        for (const step of shot.steps) await runStep(page, step, base);
+        // Let any web fonts finish, then settle, for a stable capture.
+        await page.evaluate(() => (document.fonts ? document.fonts.ready : null));
+        await page.waitForTimeout(cfg.settleMs);
+        const buf = await page.screenshot(shot.screenshot || {});
+        const dest = join(cfg.outDir, `${shot.name}.png`);
+        results.push(decide(shot.name, dest, buf, cfg.diffRatio, !check));
+      } catch (e) {
+        throw new Error(`shot "${shot.name}" failed: ${e.message}`);
+      }
     }
   } finally {
     await browser.close();

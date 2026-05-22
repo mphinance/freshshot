@@ -25,6 +25,8 @@ export function loadConfig(path) {
     throw new Error(`Config is not valid JSON (${path}): ${e.message}`);
   }
   const cfg = { ...DEFAULTS, ...raw };
+  // Deep-merge nested objects so a partial "viewport" keeps its defaults.
+  cfg.viewport = { ...DEFAULTS.viewport, ...(raw.viewport || {}) };
 
   if (!cfg.serve && !cfg.baseUrl) {
     throw new Error('Config must set "serve" (a local folder) or "baseUrl" (a URL).');

@@ -3,7 +3,7 @@
 
 import { createServer } from 'http';
 import { readFileSync, existsSync, statSync } from 'fs';
-import { join, extname, resolve } from 'path';
+import { join, extname, resolve, sep } from 'path';
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -31,8 +31,9 @@ export function serve(dir) {
       let path = decodeURIComponent(req.url.split('?')[0]);
       if (path.endsWith('/')) path += 'index.html';
       const file = resolve(join(root, path));
-      // Stay inside the served folder.
-      if (!file.startsWith(root) || !existsSync(file) || !statSync(file).isFile()) {
+      // Stay inside the served folder. The trailing separator stops a
+      // sibling like "site-other" from matching a root of "site".
+      if (!file.startsWith(root + sep) || !existsSync(file) || !statSync(file).isFile()) {
         res.writeHead(404);
         res.end('not found');
         return;
